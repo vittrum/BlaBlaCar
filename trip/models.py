@@ -7,8 +7,6 @@ class Car(models.Model):
     mark = models.CharField(max_length=50)
     model_name = models.CharField(max_length=30)
     places_count = models.IntegerField()
-    # top_list_driver = ?
-    # top_list_driver = ?
 
     user = models.ForeignKey('user.User', on_delete=models.DO_NOTHING)
 
@@ -35,8 +33,6 @@ class Trip(models.Model):
     departure_time = models.TimeField(blank=True)
     places_available = models.IntegerField(blank=True)
     status = models.CharField(max_length=100, default='trip_status')
-
-    # user_id - foreign key?
 
     def __str__(self):
         return self.address

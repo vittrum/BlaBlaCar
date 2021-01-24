@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <form name="form" action = "{% url "add_car" %}"
+          method="POST" >{% csrf_token %}
+
+         <div style="max-width:470px;">
+            <div style="text-align: center;">
+                <label>
+                    <input type = "text" style = "margin-left:20%;"
+                       placeholder = "Baggage volume" name = "baggage_volume" />
+                </label>
+            </div>
+         <br>
+         <div style="max-width:470px;">
+            <div style="text-align: center;">
+                <label>
+                    <input type = "text" style = "margin-left:20%;"
+                       placeholder = "Status" name = "status" />
+                </label>
+            </div>
+         </div>
+         <br>
+        <div style="max-width:470px;">
+            <div style="text-align: center;">
+                <label>
+                    <input type = "text" style = "margin-left:20%;"
+                       placeholder = "Mark" name = "mark" />
+                </label>
+            </div>
+         </div>
+         <br>
+        <div style="max-width:470px;">
+            <div style="text-align: center;">
+                <label>
+                    <input type = "text" style = "margin-left:20%;"
+                       placeholder = "Model name" name = "model_name" />
+                </label>
+            </div>
+         </div>
+         <br>
+        <div style="max-width:470px;">
+            <div style="text-align: center;">
+                <label>
+                    <input type = "text" style = "margin-left:20%;"
+                       placeholder = "Places count" name = "places_count" />
+                </label>
+            </div>
+         </div>
+         <br>
+         <div style="max-width:470px;">
+            <div style="text-align: center;">
+               <button style="border:0px; background-color:#4285F4; margin-top:8%;
+                  height:35px; width:80%;margin-left:19%;" type="submit"
+                  value="Add car">
+                  <strong>Add car</strong>
+               </button>
+            </div>
+         </div>
+    </form>
+</body>
+</html>
