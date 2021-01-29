@@ -2,38 +2,32 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+
     <title>Login</title>
+
+    <style>
+        .main-form {
+            margin-top: 50px;
+            padding: 10px;
+            border: 1px solid black;
+        }
+    </style>
 </head>
 <body>
-    <form name="form" action = "{% url "login" %}"
-         method="POST" >{% csrf_token %}
-         <div style="max-width:470px;">
-            <div style="text-align: center;">
-                <label>
-                    <input type = "text" style = "margin-left:20%;"
-                       placeholder = "Identifiant" name = "phone" />
-                </label>
+    <div class="container">
+        <div class="row">
+            <div class="col-4"></div>
+            <div class="col-4">
+                <form class="main-form d-flex flex-column" action = "{% url "login" %}" method="POST" >
+{#                    {% csrf_token %}#}
+                    <input class="w-100 mb-4 d-block" type="text" placeholder ="Identifiant" name = "phone" />
+                    <input class="w-100 mb-3" type="password" placeholder="password" name="password" />
+                    <button class="w-100" type="submit" value="Login"><strong>Login</strong></button>
+                </form>
             </div>
-         </div>
-         <br>
-         <div style="max-width:470px;">
-            <div style="text-align: center;">
-                <label>
-                    <input type="password" style = "margin-left:20%;"
-                       placeholder="password" name="password" />
-                </label>
-            </div>
-         </div>
-         <br>
-         <div style="max-width:470px;">
-            <div style="text-align: center;">
-               <button style="border:0px; background-color:#4285F4; margin-top:8%;
-                  height:35px; width:80%;margin-left:19%;" type="submit"
-                  value="Login">
-                  <strong>Login</strong>
-               </button>
-            </div>
-         </div>
-      </form>
+            <div class="col-4"></div>
+        </div>
+    </div>
 </body>
 </html>
