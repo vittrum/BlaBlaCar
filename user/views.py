@@ -27,15 +27,5 @@ def login(request):
 
 
 def register(request):
-    if request.method == 'POST':
-        form = RegisterForm(request.POST)
-        if form.is_valid():
-            user = User.objects.create(form.cleaned_data)
-            user.save()
-            print(user)
-        else:
-            print('form not valid')
-    else:
-        form = RegisterForm()
     return 'user created'
 

@@ -41,10 +41,12 @@ INSTALLED_APPS = [
 
     # Tech
     'psycopg2',
+    'rest_framework',
 
     # Local
     'user',
     'trip',
+
 ]
 
 MIDDLEWARE = [

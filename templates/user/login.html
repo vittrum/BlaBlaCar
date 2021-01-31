@@ -21,8 +21,8 @@
             <div class="col-4">
                 <form class="main-form d-flex flex-column" action = "{% url "login" %}" method="POST" >
 {#                    {% csrf_token %}#}
-                    <input class="w-100 mb-4 d-block" type="text" placeholder ="Identifiant" name = "phone" />
-                    <input class="w-100 mb-3" type="password" placeholder="password" name="password" />
+                    <input class="w-100 mb-4 d-block" type="text" placeholder ="Phone number" name = "phone" />
+                    <input class="w-100 mb-3" type="password" placeholder="Password" name="password" />
                     <button class="w-100" type="submit" value="Login"><strong>Login</strong></button>
                 </form>
             </div>
