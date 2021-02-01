@@ -1,13 +1,14 @@
 from rest_framework import generics, views, status
 from rest_framework.response import Response
 
+from user.models import User
 from . import serializers as sr
 from ..models import Car, City, CityTrip
 
 
 class CarCreateView(views.APIView):
     def post(self, request):
-        driver = self.request.user
+        driver = User.objects.get(phone='2222')#self.request.user
         serializer = sr.CarCreateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         _validated = serializer.validated_data
