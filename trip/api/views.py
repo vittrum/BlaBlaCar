@@ -3,12 +3,12 @@ from rest_framework.response import Response
 
 from user.models import User
 from . import serializers as sr
-from ..models import Car, City, CityTrip
+from ..models import Car, City, CityTrip, Trip
 
 
 class CarCreateView(views.APIView):
     def post(self, request):
-        driver = User.objects.get(phone='2222') # self.request.user
+        driver = User.objects.get(phone='2222')  # self.request.user
         serializer = sr.CarCreateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         _validated = serializer.validated_data
@@ -36,3 +36,23 @@ class TripCreateView(views.APIView):
         return Response(status=status.HTTP_201_CREATED)
 
 
+class TripListView(generics.ListAPIView):
+    class Meta:
+        model = Trip
+        fields = '__all__'
+
+
+class TripUserApproveView(views.APIView):
+    def post(self, request, pk):
+        pass  # продумать, как правильно делать апрув
+
+
+class TripUserDeclineView(views.APIView):
+    def post(self, request, pk):
+        pass
+
+
+class TripUserCommentView(views.APIView):
+    pass
+
+# by Viktor_Kovalskii.
