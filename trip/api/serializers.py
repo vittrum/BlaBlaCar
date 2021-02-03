@@ -7,7 +7,6 @@ class CarCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Car
         exclude = ['user']
-        #fields = '__all__'
 
 
 class CitySerializer(serializers.ModelSerializer):

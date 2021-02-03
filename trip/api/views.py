@@ -1,19 +1,25 @@
 from rest_framework import generics, views, status
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 
+from BlaBlaCar import settings
 from user.models import User
 from . import serializers as sr
 from ..models import Car, City, CityTrip, Trip
 
 
 class CarCreateView(views.APIView):
+    permission_classes = [ AllowAny] # [AllowAny, ]IsAuthenticated,
+
     def post(self, request):
-        driver = User.objects.get(phone='2222')  # self.request.user
+        driver = User.objects.get(phone='2222')
         serializer = sr.CarCreateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         _validated = serializer.validated_data
         _validated['user'] = driver
         Car.objects.create(**_validated)
+
+        print(settings.DB_LOGIN)
         return Response(status=status.HTTP_201_CREATED)
 
 

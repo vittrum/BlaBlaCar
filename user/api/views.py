@@ -4,6 +4,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from BlaBlaCar import settings
 from user.api.serializers import UserRegistrationSerializer, UserLoginSerializer
 from user.models import User
 
@@ -29,8 +30,11 @@ class UserLoginView(ListAPIView):
         serializer.is_valid()
         _user = User.objects.get(phone=request.data['phone'])
         _role = _user.status
+        settings.DB_LOGIN, settings.DB_PASS = settings.change_root(_role)
         return Response({'role': _role},
                         status=status.HTTP_200_OK)
 
     def get_queryset(self):
         return
+
+

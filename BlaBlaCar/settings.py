@@ -12,6 +12,19 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 import os
 from pathlib import Path
 
+DB_LOGIN = 'bla_obs'
+DB_PASS  = '1'
+
+
+def change_root(status):
+    if status == 'driver':
+        return 'driver', '1'
+    else:
+        return 'user', '1'
+
+
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -88,8 +101,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'bla',
-        'USER': 'postgres',
-        'PASSWORD': '1',
+        'USER': DB_LOGIN,
+        'PASSWORD': DB_PASS,
         'HOST': 'localhost',
         'PORT': ''
     }
