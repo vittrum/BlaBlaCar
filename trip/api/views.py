@@ -1,6 +1,7 @@
 from rest_framework import generics, views, status
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from BlaBlaCar import settings
 from user.models import User
@@ -9,7 +10,8 @@ from ..models import Car, City, CityTrip, Trip
 
 
 class CarCreateView(views.APIView):
-    permission_classes = [ AllowAny] # [AllowAny, ]IsAuthenticated,
+    permission_classes = [IsAuthenticated, ]  # [AllowAny, ]IsAuthenticated,
+    authentication_classes = JSONWebTokenAuthentication
 
     def post(self, request):
         driver = User.objects.get(phone='2222')
@@ -24,6 +26,7 @@ class CarCreateView(views.APIView):
 
 
 class CarDeleteView(generics.DestroyAPIView):
+    authentication_classes = [JSONWebTokenAuthentication, ]
     serializer_class = sr.CarCreateSerializer
     queryset = Car.objects.all()
 

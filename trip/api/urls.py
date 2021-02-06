@@ -7,4 +7,3 @@ urlpatterns = [
     path('car/<int:pk>/', views.CarDeleteView.as_view()),
     path('trip/create/', views.TripCreateView.as_view()),
 ]
-

@@ -1,8 +1,7 @@
-from rest_framework import generics, status
+from rest_framework import status
 from rest_framework.generics import CreateAPIView, ListAPIView
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
-from rest_framework.views import APIView
 
 from BlaBlaCar import settings
 from user.api.serializers import UserRegistrationSerializer, UserLoginSerializer
@@ -28,10 +27,16 @@ class UserLoginView(ListAPIView):
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid()
-        _user = User.objects.get(phone=request.data['phone'])
+        serializer.validate(request.data)
+        _phone = serializer.data['phone']
+        _token = serializer.data['token']
+        _user = User.objects.get(phone=_phone)
         _role = _user.status
         settings.DB_LOGIN, settings.DB_PASS = settings.change_root(_role)
-        return Response({'role': _role},
+        print(settings.DB_LOGIN)
+        return Response({'role': _role,
+                         'token': _token,
+                         'phone': _phone},
                         status=status.HTTP_200_OK)
 
     def get_queryset(self):
