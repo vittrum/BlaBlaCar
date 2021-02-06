@@ -68,8 +68,8 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 
 
 class UserTripSerializer(serializers.ModelSerializer):
-    trip = TripSerializer()
-    user = UserSerializer()
+    #trip = TripSerializer()
+    #user = UserSerializer()
 
     class Meta:
         model = UserTrip

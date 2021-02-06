@@ -64,12 +64,14 @@ class TripCreateView(views.APIView):
 
 
 class TripListView(generics.ListAPIView):
+    authentication_classes = [JSONWebTokenAuthentication, ]
     class Meta:
         model = Trip
         fields = '__all__'
 
 
 class TripUserApproveView(views.APIView):
+    authentication_classes = [JSONWebTokenAuthentication, ]
     def post(self, request, pk):
         _ut = UserTrip.objects.get(id=pk)
         _ut.acception = True
@@ -78,7 +80,10 @@ class TripUserApproveView(views.APIView):
         return Response(status=status.HTTP_200_OK)
 
 
+# Переделать на что-то типа None или Null, или сделать не bool,
+# а статус, чтобы можно было отличить от ожидающих отклоненные
 class TripUserDeclineView(views.APIView):
+    authentication_classes = [JSONWebTokenAuthentication, ]
     def post(self, request, pk):
         _ut = UserTrip.objects.get(id=pk)
         _ut.acception = False
@@ -87,6 +92,16 @@ class TripUserDeclineView(views.APIView):
         return Response(status=status.HTTP_200_OK)
 
 
+class TripRequestsListView(generics.ListAPIView):
+    authentication_classes = [JSONWebTokenAuthentication, ]
+    pass
+    # serializer_class = UserTripListSerializer
+
+    # def get(self, request, *args, **kwargs):
+    #    queryset = UserTrip.objects.filter(trip__car__user=request.user)
+
+
 class TripUserCommentView(views.APIView):
+    authentication_classes = [JSONWebTokenAuthentication, ]
     pass
 

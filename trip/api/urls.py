@@ -5,7 +5,10 @@ from . import views
 urlpatterns = [
     path('car/add/', views.CarCreateView.as_view()),
     path('car/<int:pk>/', views.CarDeleteView.as_view()),
-    path('trip/add/', views.TripCreateView.as_view()),
+    path('add/', views.TripCreateView.as_view()),
+    #path('requests/', views.TripRequestListView.as_view()),
     path('', views.TripListView.as_view()),
-    path('trip/<int:pk>/request/, ')
+    path('requests/<int:pk>/approve/', views.TripUserApproveView.as_view()),
+    path('requests/<int:pk>/decline/', views.TripUserDeclineView.as_view()),
+
 ]
