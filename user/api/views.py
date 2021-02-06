@@ -1,11 +1,14 @@
-from rest_framework import status
+from rest_framework import status, views
 from rest_framework.generics import CreateAPIView, ListAPIView
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from BlaBlaCar import settings
-from user.api.serializers import UserRegistrationSerializer, UserLoginSerializer
-from user.models import User
+from trip.models import Trip
+from user.api.serializers import UserRegistrationSerializer, \
+    UserLoginSerializer, UserTripSerializer
+from user.models import User, UserTrip
 
 
 class UserRegistrationView(CreateAPIView):
@@ -43,3 +46,19 @@ class UserLoginView(ListAPIView):
         return
 
 
+class UserTripView(views.APIView):
+    authentication_classes = [JSONWebTokenAuthentication, ]
+
+    def post(self, request, pk):
+        _data = request.data
+
+        _data['user'] = self.request.user
+        _data['trip'] = Trip.objects.get(id=pk)
+        _data['approved'] = False
+
+        user_trip_serializer = UserTripSerializer(data=_data)
+        user_trip_serializer.is_valid(raise_exception=True)
+
+        UserTrip.objects.create(**user_trip_serializer.validated_data)
+
+        return Response(status=status.HTTP_201_CREATED)

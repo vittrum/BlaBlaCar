@@ -68,6 +68,7 @@ class DriverComment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='client')
     driver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='driver')
 
+    # Евгений Валерьевич, а вы точно весь код смотрите?
     def __str__(self):
         return self.text
 

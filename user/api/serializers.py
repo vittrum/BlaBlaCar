@@ -10,6 +10,7 @@ JWT_PAYLOAD_HANDLER = api_settings.JWT_PAYLOAD_HANDLER
 JWT_ENCODE_HANDLER = api_settings.JWT_ENCODE_HANDLER
 
 
+
 class UserLoginSerializer(serializers.Serializer):
     phone = serializers.CharField(max_length=255)
     password = serializers.CharField(max_length=128, write_only=True)

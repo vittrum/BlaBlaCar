@@ -28,6 +28,7 @@ class City(models.Model):
 
 
 class Trip(models.Model):
+    car = models.ForeignKey(Car, on_delete=models.CASCADE)
     address = models.CharField(max_length=100)
     departure_date = models.DateField(blank=True)
     departure_time = models.TimeField(blank=True)
