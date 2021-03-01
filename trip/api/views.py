@@ -4,13 +4,15 @@ from rest_framework.response import Response
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from BlaBlaCar import settings
+from user.api.serializers import UserSerializer
 from user.models import User, UserTrip
 from . import serializers as sr
-from ..models import Car, City, CityTrip, Trip
+from .serializers import TripSerializer
+from ..models import Car, City, CityTrip, Trip, TripComment
 
 
 class CarCreateView(views.APIView):
-    #permission_classes = [IsAuthenticated, ]  # [AllowAny, ]IsAuthenticated,
+    # permission_classes = [IsAuthenticated, ]  # [AllowAny, ]IsAuthenticated,
     authentication_classes = [JSONWebTokenAuthentication, ]
 
     def post(self, request):
@@ -65,6 +67,7 @@ class TripCreateView(views.APIView):
 
 class TripListView(generics.ListAPIView):
     authentication_classes = [JSONWebTokenAuthentication, ]
+
     class Meta:
         model = Trip
         fields = '__all__'
@@ -72,6 +75,7 @@ class TripListView(generics.ListAPIView):
 
 class TripUserApproveView(views.APIView):
     authentication_classes = [JSONWebTokenAuthentication, ]
+
     def post(self, request, pk):
         _ut = UserTrip.objects.get(id=pk)
         _ut.acception = True
@@ -84,6 +88,7 @@ class TripUserApproveView(views.APIView):
 # а статус, чтобы можно было отличить от ожидающих отклоненные
 class TripUserDeclineView(views.APIView):
     authentication_classes = [JSONWebTokenAuthentication, ]
+
     def post(self, request, pk):
         _ut = UserTrip.objects.get(id=pk)
         _ut.acception = False
@@ -94,14 +99,28 @@ class TripUserDeclineView(views.APIView):
 
 class TripRequestsListView(generics.ListAPIView):
     authentication_classes = [JSONWebTokenAuthentication, ]
-    pass
-    # serializer_class = UserTripListSerializer
+    trip = TripSerializer
+    user = UserSerializer
 
-    # def get(self, request, *args, **kwargs):
-    #    queryset = UserTrip.objects.filter(trip__car__user=request.user)
+    class Meta:
+        model = UserTrip
+        fields = '__all__'
 
 
 class TripUserCommentView(views.APIView):
     authentication_classes = [JSONWebTokenAuthentication, ]
-    pass
 
+    def post(self, request):
+        _data = request.data
+        _user = self.request.user
+        _trip_id = _data['trip_id']
+        _text = _data['text']
+        _type = _data.get('type', 'comment')
+        _trip = Trip.objects.get(id=_trip_id)
+        TripComment.objects.create(
+            text=_text,
+            type=_type,
+            trip=_trip,
+            user=_user
+        )
+        return Response(status=status.HTTP_201_CREATED)
