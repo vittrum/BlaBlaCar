@@ -9,5 +9,5 @@ urlpatterns = [
     path('', views.TripListView.as_view()),
     path('requests/<int:pk>/approve/', views.TripUserApproveView.as_view()),
     path('requests/<int:pk>/decline/', views.TripUserDeclineView.as_view()),
-    path('trips/<int:pk>/comment/add/', views.TripUserCommentView.as_view()),
+    path('<int:pk>/comment/add/', views.TripUserCommentView.as_view()),
 ]
