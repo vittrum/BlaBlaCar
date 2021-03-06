@@ -46,7 +46,7 @@ class UserLoginView(ListAPIView):
         return
 
 
-class UserTripView(views.APIView):
+class UserTripRequestView(views.APIView):
     authentication_classes = [JSONWebTokenAuthentication, ]
 
     def post(self, request, pk):

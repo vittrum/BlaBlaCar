@@ -19,7 +19,11 @@ from django.urls import path, include
 
 from django.conf import settings
 
+from user.api import views
+
 urlpatterns = [
+    path('', views.UserLoginView.as_view()),
+    path('register/', views.UserRegistrationView.as_view()),
     path('admin/', admin.site.urls),
     path('users/', include('user.api.urls')),
     path('trips/', include('trip.api.urls')),
