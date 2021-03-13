@@ -12,9 +12,21 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 import os
 from datetime import timedelta
 from pathlib import Path
+import mimetypes
+
+mimetypes.add_type("application/javascript", ".js", True)
 
 DB_LOGIN = 'bla_obs'
 DB_PASS = '1'
+
+def show_toolbar(request):
+    return True
+
+
+SHOW_TOOLBAR_CALLBACK = show_toolbar
+DEBUG_TOOLBAR_CONFIG = {
+    "SHOW_TOOLBAR_CALLBACK": show_toolbar,
+}
 
 
 def change_root(status):
@@ -40,6 +52,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -53,6 +69,7 @@ INSTALLED_APPS = [
     # Tech
     'psycopg2',
     'rest_framework',
+    'debug_toolbar',
 
     # Local
     'user',
@@ -61,6 +78,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -68,6 +86,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
 ]
 
 ROOT_URLCONF = 'BlaBlaCar.urls'
@@ -98,7 +117,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'bla',
-        'USER':  DB_LOGIN,
+        'USER': DB_LOGIN,
         'PASSWORD': DB_PASS,
         'HOST': 'localhost',
         'PORT': ''
@@ -130,7 +149,8 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
-    )
+    ),
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
 }
 
 JWT_AUTH = {
@@ -179,8 +199,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_DIR = os.path.join(BASE_DIR, 'static')
-STATICFILES_DIRS = [STATIC_DIR]
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

@@ -67,10 +67,10 @@ class TripCreateView(views.APIView):
 
 class TripListView(generics.ListAPIView):
     authentication_classes = [JSONWebTokenAuthentication, ]
-
-    class Meta:
-        model = Trip
-        fields = '__all__'
+    queryset = Trip.objects.all()
+    serializer_class = TripSerializer
+    filterset_fields = ['status']
+    search_fields = ['status', 'car__model_name']
 
 
 class TripUserApproveView(views.APIView):
