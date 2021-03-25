@@ -5,9 +5,9 @@ from rest_framework.response import Response
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from BlaBlaCar import settings
-from trip.models import Trip
+from trip.models import Trip, Car
 from user.api.serializers import UserRegistrationSerializer, \
-    UserLoginSerializer, UserTripSerializer
+    UserLoginSerializer, UserTripSerializer, UserCarSerializer, UserTripListSerializer
 from user.models import User, UserTrip
 
 
@@ -54,7 +54,7 @@ class UserTripRequestView(views.APIView):
 
         _user = self.request.user.id
         #_trip = Trip.objects.get(id=pk)
-        _data['approved'] = False
+        _data['approved'] = None
         _data['user'] = _user
         _data['trip'] = pk
 
@@ -71,3 +71,20 @@ class UserWithdrawView(generics.DestroyAPIView):
     serializer_class = UserTripSerializer
     queryset = UserTrip.objects.all()
 
+
+class UserGetCars(generics.ListAPIView):
+    authentication_classes = [JSONWebTokenAuthentication, ]
+    serializer_class = UserCarSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return Car.objects.filter(user=user)
+
+
+class UserGetTrips(generics.ListAPIView):
+    authentication_classes = [JSONWebTokenAuthentication, ]
+    serializer_class = UserTripListSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return UserTrip.objects.filter(user=user)

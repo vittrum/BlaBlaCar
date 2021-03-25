@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from trip.models import Car, City, Trip, TripComment, CityTrip
+from user.models import UserTrip, User
 
 
 class CarCreateSerializer(serializers.ModelSerializer):
@@ -16,7 +17,6 @@ class CitySerializer(serializers.ModelSerializer):
 
 
 class TripSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Trip
         fields = '__all__'
@@ -35,4 +35,24 @@ class CityTripSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CityTrip
-        field = '__all__'
+        fields = '__all__'
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            'phone',
+            'name',
+            'lastname',
+            'status'
+        ]
+
+
+class TripRequestSerializer(serializers.ModelSerializer):
+    trip = TripSerializer()
+    user = UserSerializer()
+
+    class Meta:
+        model = UserTrip
+        fields = '__all__'

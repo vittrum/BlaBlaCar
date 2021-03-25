@@ -51,7 +51,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class UserTrip(models.Model):
-    acception = models.CharField(max_length=50, default=False)
+    acception = models.CharField(max_length=50, default=None,
+                                 blank=True, null=True)
     trip = models.ForeignKey(trip.models.Trip, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 

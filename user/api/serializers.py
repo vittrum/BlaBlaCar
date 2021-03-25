@@ -4,6 +4,7 @@ from rest_framework import serializers
 from rest_framework_jwt.settings import api_settings
 
 from trip.api.serializers import TripSerializer
+from trip.models import Car
 from user.models import UserTrip, User, DriverComment
 
 JWT_PAYLOAD_HANDLER = api_settings.JWT_PAYLOAD_HANDLER
@@ -76,6 +77,14 @@ class UserTripSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class UserTripListSerializer(serializers.ModelSerializer):
+    trip = TripSerializer()
+
+    class Meta:
+        model = UserTrip
+        fields = '__all__'
+
+
 class DriverCommentSerializer(serializers.ModelSerializer):
     user = UserSerializer()
     driver = UserSerializer()
@@ -83,3 +92,9 @@ class DriverCommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = DriverComment
         fields = '__all__'
+
+
+class UserCarSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Car
+        exclude = ['user']

@@ -1,13 +1,11 @@
 from rest_framework import generics, views, status
-from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from BlaBlaCar import settings
-from user.api.serializers import UserSerializer
-from user.models import User, UserTrip
+from user.models import UserTrip
 from . import serializers as sr
-from .serializers import TripSerializer
+from .serializers import TripSerializer, TripRequestSerializer, TripCommentSerializer
 from ..models import Car, City, CityTrip, Trip, TripComment
 
 
@@ -84,8 +82,6 @@ class TripUserApproveView(views.APIView):
         return Response(status=status.HTTP_200_OK)
 
 
-# Переделать на что-то типа None или Null, или сделать не bool,
-# а статус, чтобы можно было отличить от ожидающих отклоненные
 class TripUserDeclineView(views.APIView):
     authentication_classes = [JSONWebTokenAuthentication, ]
 
@@ -99,21 +95,24 @@ class TripUserDeclineView(views.APIView):
 
 class TripRequestsListView(generics.ListAPIView):
     authentication_classes = [JSONWebTokenAuthentication, ]
-    trip = TripSerializer
-    user = UserSerializer
+    serializer_class = TripRequestSerializer
 
     class Meta:
         model = UserTrip
         fields = '__all__'
 
+    def get_queryset(self):
+        user = self.request.user
+        return UserTrip.objects.filter(user=user)
 
-class TripUserCommentView(views.APIView):
+
+class TripUserCommentAddView(views.APIView):
     authentication_classes = [JSONWebTokenAuthentication, ]
 
-    def post(self, request):
+    def post(self, request, pk):
         _data = request.data
         _user = self.request.user
-        _trip_id = _data['trip_id']
+        _trip_id = pk
         _text = _data['text']
         _type = _data.get('type', 'comment')
         _trip = Trip.objects.get(id=_trip_id)
@@ -124,3 +123,17 @@ class TripUserCommentView(views.APIView):
             user=_user
         )
         return Response(status=status.HTTP_201_CREATED)
+
+
+class TripUserCommentListView(generics.ListAPIView):
+    authentication_classes = [JSONWebTokenAuthentication, ]
+    serializer_class = TripCommentSerializer
+
+    def get_queryset(self):
+        queryset = TripComment.objects.all()
+        filter_value = self.request.query_params.get('trip', None)
+        if filter_value is not None:
+            queryset = queryset.filter(id=filter_value)
+        return queryset
+
+
